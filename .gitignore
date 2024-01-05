@@ -1,0 +1,9 @@
+.env
+build/
+dist/
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+.idea
+.pytest_cache

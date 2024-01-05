@@ -1,1 +1,1 @@
-from dassco_storage_client import DaSSCoStorageClient
+from .dassco_storage_client import DaSSCoStorageClient

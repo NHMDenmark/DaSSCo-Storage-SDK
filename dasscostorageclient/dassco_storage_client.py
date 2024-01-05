@@ -1,8 +1,11 @@
 import requests
-from resources.institutions import Institutions
-from resources.assets import Assets
-from resources.shares import Shares
-from exceptions.api_error import APIError
+from .resources.institutions import Institutions
+from .resources.assets import Assets
+from .resources.shares import Shares
+from .resources.workstations import Workstations
+from .resources.pipelines import Pipelines
+from .resources.collections import Collections
+from .exceptions.api_error import APIError
 
 
 class DaSSCoStorageClient:
@@ -16,8 +19,17 @@ class DaSSCoStorageClient:
         self.institutions = Institutions(self.access_token)
         self.assets = Assets(self.access_token)
         self.shares = Shares(self.access_token)
+        self.workstations = Workstations(self.access_token)
+        self.pipelines = Pipelines(self.access_token)
+        self.collections = Collections(self.access_token)
 
     def __get_access_token(self):
+        """
+            Authenticates the client_id and client_secret. If the credentials are valid, an access token is obtained.
+
+            Returns:
+                A valid access token that will be used in subsequent requests
+        """
         data = {
             'grant_type': 'client_credentials',
             'client_id': self.client_id,

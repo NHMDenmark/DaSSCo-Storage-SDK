@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from dasscostorageclient.dassco_storage_client import DaSSCoStorageClient
+from dasscostorageclient import DaSSCoStorageClient
 import os
 
 load_dotenv()
