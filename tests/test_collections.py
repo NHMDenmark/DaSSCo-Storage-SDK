@@ -1,4 +1,4 @@
-from dassco_test_client import client
+from .dassco_test_client import client
 
 
 def test_can_list_collection():
