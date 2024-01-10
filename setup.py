@@ -19,6 +19,7 @@ setup(
     author_email="dassco@ku.dk",
     description=description,
     long_description=long_description,
+    long_description_content_type="text/markdown",
     packages=find_packages(),
     install_requires=['requests', 'pydantic'],
     python_requires=">=3.10",
