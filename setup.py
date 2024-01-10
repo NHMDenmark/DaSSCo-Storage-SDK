@@ -16,7 +16,7 @@ setup(
     name="dasscostorageclient",
     version=version,
     author="DaSSCo",
-    author_email="dassco.ku.dk",
+    author_email="dassco@ku.dk",
     description=description,
     long_description=long_description,
     packages=find_packages(),
