@@ -6,7 +6,7 @@ class Institutions:
     def __init__(self, access_token):
         self.access_token = access_token
 
-    def list_institutions(self):
+    def list(self):
         """
         Gets a list of all institutions
 
@@ -15,7 +15,7 @@ class Institutions:
         """
         return send_request(RequestMethod.GET, self.access_token, "/v1/institutions")
 
-    def get_institution(self, name: str):
+    def get(self, name: str):
         """
         Gets the institution with the given name
 
@@ -27,7 +27,7 @@ class Institutions:
         """
         return send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{name}")
 
-    def create_institution(self, name: str):
+    def create(self, name: str):
         """
           Creates an institution with the given name
 

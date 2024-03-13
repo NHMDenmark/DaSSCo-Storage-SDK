@@ -6,7 +6,7 @@ class Collections:
     def __init__(self, access_token):
         self.access_token = access_token
 
-    def list_collections(self, institution_name: str):
+    def list(self, institution_name: str):
         """
         Gets a list of all collections in a given institution
 
@@ -18,7 +18,7 @@ class Collections:
         """
         return send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{institution_name}/collections")
 
-    def create_collection(self, institution_name: str, collection_name: str):
+    def create(self, institution_name: str, collection_name: str):
         """
           Creates a collection in a given institution
 

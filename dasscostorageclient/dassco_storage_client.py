@@ -1,10 +1,10 @@
 import requests
 from .resources.institutions import Institutions
 from .resources.assets import Assets
-from .resources.shares import Shares
 from .resources.workstations import Workstations
 from .resources.pipelines import Pipelines
 from .resources.collections import Collections
+from .resources.fileproxy import FileProxy
 from .exceptions.api_error import APIError
 
 
@@ -18,10 +18,10 @@ class DaSSCoStorageClient:
         self.access_token = self.__get_access_token()
         self.institutions = Institutions(self.access_token)
         self.assets = Assets(self.access_token)
-        self.shares = Shares(self.access_token)
         self.workstations = Workstations(self.access_token)
         self.pipelines = Pipelines(self.access_token)
         self.collections = Collections(self.access_token)
+        self.file_proxy = FileProxy(self.access_token)
 
     def __get_access_token(self):
         """
@@ -43,4 +43,4 @@ class DaSSCoStorageClient:
             token_data = res.json()
             return token_data.get("access_token")
         else:
-            raise APIError(response=res.json(), status_code=res.status_code)
+            raise APIError(res)

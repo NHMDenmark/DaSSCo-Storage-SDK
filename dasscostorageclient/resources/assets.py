@@ -1,13 +1,13 @@
 from typing import List
-from .models.sambainfo import SambaInfoModel
 from .models.specimen import SpecimenModel
 from ..utils import *
 from pydantic import TypeAdapter, Field, BaseModel
 from datetime import datetime
+from .models.httpinfo import HTTPInfoModel
 
 
 class AssetModel(BaseModel):
-    pid: str = Field(alias='asset_pid')
+    pid: str | None = Field(alias='asset_pid')
     guid: str = Field(alias='asset_guid')
     status: str
     multi_specimen: bool
@@ -20,17 +20,26 @@ class AssetModel(BaseModel):
     restricted_access: list[str]
     institution: str
     collection: str
-    sambaInfo: SambaInfoModel | None
     pipeline: str
     digitiser: str | None
+    http_info: HTTPInfoModel | None = Field(alias='httpInfo')
 
 
 class EventModel(BaseModel):
-    user: str
+    user: str | None
     timestamp: datetime = Field(alias="timeStamp")
     event: str
     workstation: str
     pipeline: str
+
+
+class AssetStatus(BaseModel):
+    guid: str = Field(alias='asset_guid')
+    parent_guid: str | None
+    error_timestamp: datetime | None
+    status: str
+    error_message: str | None
+    share_allocation_mb: int | None
 
 
 class Assets:
@@ -38,7 +47,7 @@ class Assets:
     def __init__(self, access_token):
         self.access_token = access_token
 
-    def get_asset(self, guid: str):
+    def get(self, guid: str):
         """
         Gets the metadata of the given asset
 
@@ -48,29 +57,39 @@ class Assets:
         Returns:
             An Asset object that contains the metadata
         """
-        res = send_request(RequestMethod.GET, self.access_token, f"/v1/assetmetadata/{guid}")
+        res = send_request(
+            RequestMethod.GET,
+            self.access_token,
+            f"/v1/assetmetadata/{guid}")
+
         return {
-            'data': AssetModel.model_validate(res.get('data')),
-            'status_code': res.get('status_code')
+            'data': AssetModel.model_validate(res.json()),
+            'status_code': res.status_code
         }
 
-    def create_asset(self, body: dict):
+    def create(self, body: dict, allocation_mb: int):
         """
         Creates a new asset
 
         Args:
             body (dict): The metadata of the new asset
+            allocation_mb (int): The amount of storage allocated for the new asset
 
         Returns:
             An Asset object that contains the metadata of the created asset
         """
-        res = send_request(RequestMethod.POST, self.access_token, f"/v1/assetmetadata", body)
+        res = send_request(
+            RequestMethod.POST,
+            self.access_token,
+            f"/v1/assetmetadata?allocation_mb={allocation_mb}",
+            body)
+
         return {
-            'data': AssetModel.model_validate(res.get('data')),
-            'status_code': res.get('status_code')
+            'data': AssetModel.model_validate(res.json()),
+            'status_code': res.status_code
         }
 
-    def update_asset(self, guid: str, body: dict):
+    def update(self, guid: str, body: dict):
         """
         Updates the asset with the given guid
 
@@ -81,10 +100,15 @@ class Assets:
         Returns:
             An Asset object that contains the metadata of the updated asset
         """
-        res = send_request(RequestMethod.PUT, self.access_token, f"/v1/assetmetadata/{guid}", body)
+        res = send_request(
+            RequestMethod.PUT,
+            self.access_token,
+            f"/v1/assetmetadata/{guid}",
+            body)
+
         return {
-            'data': AssetModel.model_validate(res.get('data')),
-            'status_code': res.get('status_code')
+            'data': AssetModel.model_validate(res.json()),
+            'status_code': res.status_code
         }
 
     def list_events(self, guid: str):
@@ -97,9 +121,40 @@ class Assets:
         Returns:
             A list of Event objects
         """
-        res = send_request(RequestMethod.GET, self.access_token, f"/v1/assetmetadata/{guid}/events")
+        res = send_request(
+            RequestMethod.GET,
+            self.access_token,
+            f"/v1/assetmetadata/{guid}/events")
+
         ta = TypeAdapter(List[EventModel])
+
         return {
-            'data': ta.validate_python(res.get('data')),
-            'status_code': res.get('status_code')
+            'data': ta.validate_python(res.json()),
+            'status_code': res.status_code
         }
+
+    def get_status(self, guid: str):
+        res = send_request(
+            RequestMethod.GET,
+            self.access_token,
+            f"/v1/assets/status/{guid}")
+
+        return {
+            'data': AssetStatus.model_validate(res.json()),
+            'status_code': res.status_code
+        }
+
+    def list_in_progress(self, only_failed=False):
+        res = send_request(
+            RequestMethod.GET,
+            self.access_token,
+            f"/v1/assets/inprogress?onlyFailed={only_failed}")
+
+        ta = TypeAdapter(List[AssetStatus])
+
+        return {
+            'data': ta.validate_python(res.json()),
+            'status_code': res.status_code
+        }
+
+

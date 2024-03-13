@@ -6,7 +6,7 @@ class Pipelines:
     def __init__(self, access_token):
         self.access_token = access_token
 
-    def list_pipelines(self, institution_name: str):
+    def list(self, institution_name: str):
         """
         Gets a list of all pipelines in a given institution
 
@@ -18,7 +18,7 @@ class Pipelines:
         """
         return send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{institution_name}/pipelines")
 
-    def create_pipeline(self, institution_name: str, pipeline_name: str):
+    def create(self, institution_name: str, pipeline_name: str):
         """
           Creates a pipeline in a given institution
 

@@ -20,7 +20,7 @@ class Workstations:
     def __init__(self, access_token):
         self.access_token = access_token
 
-    def list_workstations(self, institution_name: str):
+    def list(self, institution_name: str):
         """
         Gets a list of all workstations in a given institution
 
@@ -35,11 +35,11 @@ class Workstations:
         ta = TypeAdapter(List[WorkstationModel])
 
         return {
-            'data': ta.validate_python(res.get('data')),
-            'status_code': res.get('status_code')
+            'data': ta.validate_python(res.json()),
+            'status_code': res.status_code
         }
 
-    def create_workstation(self, institution_name: str, workstation_name: str, status: WorkstationStatus = WorkstationStatus.IN_SERVICE):
+    def create(self, institution_name: str, workstation_name: str, status: WorkstationStatus = WorkstationStatus.IN_SERVICE):
         """
            Creates a workstation in a given institution
 
@@ -58,7 +58,7 @@ class Workstations:
         res = send_request(RequestMethod.POST, self.access_token, f"/v1/institutions/{institution_name}/workstations", body)
         return WorkstationModel.model_validate(res.get('data'))
 
-    def update_workstation(self, institution_name: str, workstation_name: str, body: dict):
+    def update(self, institution_name: str, workstation_name: str, body: dict):
         """
         Updates a workstation in a given institution
 
