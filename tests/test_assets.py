@@ -1,35 +1,51 @@
+import pytest
 from .dassco_test_client import client
 
+ASSET_GUID = "test_asset10"
 
+
+@pytest.mark.skip(reason="No endpoint for clean up")
 def test_can_create_asset():
-    # TODO: Requires a DELETE endpoint to clean up
-    pass
-
-
-def test_can_get_asset():
-    asset_guid = "test_asset2"
-    res = client.assets.get_asset(asset_guid)
+    body = {
+        "asset_pid": "asdf-12346-3333-100a21",
+        "asset_guid": "test_asset",
+        "funding": "some funding",
+        "subject": "folder",
+        "institution": "test-institution",
+        "pipeline": "ti-p1",
+        "collection": "test-collection",
+        "workstation": "ti-ws-01",
+        "status": "WORKING_COPY",
+    }
+    res = client.assets.create(body, 1)
     status_code = res.get('status_code')
     asset = res.get('data')
     assert status_code == 200
-    assert asset.guid == asset_guid
+    assert asset.guid == 'test_asset'
+    assert asset.http_info.allocated_storage_mb == 1
+
+
+def test_can_get_asset():
+    res = client.assets.get(ASSET_GUID)
+    status_code = res.get('status_code')
+    asset = res.get('data')
+    assert status_code == 200
+    assert asset.guid == ASSET_GUID
 
 
 def test_can_update_asset():
     # TODO: Replace asset_guid with the created asset guid from the first test when DELETE endpoint is available
-    asset_guid = "test_asset2"
     body = {
         'funding': 'test funding',
         'subject': 'test subject',
         'updateUser': 'Test user',  # Required
-        'institution': 'ld',  # Required
-        'pipeline': 'lpipe',  # Required
-        'collection': 'lcoll',  # Required
-        'workstation': 'lwork',  # Required
+        'institution': 'test-institution',  # Required
+        'pipeline': 'ti-p1',  # Required
+        'collection': 'test-collection',  # Required
+        'workstation': 'ti-ws-01',  # Required
         'status': 'WORKING_COPY'  # Required
-
     }
-    res = client.assets.update_asset(asset_guid, body)
+    res = client.assets.update(ASSET_GUID, body)
     status_code = res.get('status_code')
     asset = res.get('data')
     assert status_code == 200
@@ -38,10 +54,8 @@ def test_can_update_asset():
 
 
 def test_can_list_events():
-    asset_guid = "test_asset2"
-    res = client.assets.list_events(asset_guid)
+    res = client.assets.list_events(ASSET_GUID)
     status_code = res.get('status_code')
     events = res.get('data')
     assert status_code == 200
     assert isinstance(events, list)
-

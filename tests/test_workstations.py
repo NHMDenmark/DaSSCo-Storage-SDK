@@ -7,8 +7,8 @@ def test_can_create_workstation():
 
 
 def test_can_list_workstations():
-    institution_name = "ld"
-    res = client.workstations.list_workstations(institution_name)
+    institution_name = "test-institution"
+    res = client.workstations.list(institution_name)
     status_code = res.get('status_code')
     workstations = res.get('data')
     assert status_code == 200
@@ -16,14 +16,14 @@ def test_can_list_workstations():
 
 
 def test_can_update_workstation():
-    institution_name = "ld"
-    workstation_name = "lwork3"
+    institution_name = "test-institution"
+    workstation_name = "ti-ws-01"
     body = {
         'name': workstation_name,
-        'status': 'OUT_OF_SERVICE'
+        'status': 'IN_SERVICE'
     }
-    res = client.workstations.update_workstation(institution_name, workstation_name, body)
-    status_code = res.get('status_code')
-    assert status_code == 204
+    res = client.workstations.update(institution_name, workstation_name, body)
+    assert res.status_code == 204
+
 
 

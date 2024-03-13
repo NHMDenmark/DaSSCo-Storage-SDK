@@ -7,17 +7,14 @@ def test_can_create_institution():
 
 
 def test_can_list_institutions():
-    res = client.institutions.list_institutions()
-    status_code = res.get('status_code')
-    institutions = res.get('data')
-    assert status_code == 200
-    assert isinstance(institutions, list)
+    res = client.institutions.list()
+    assert res.status_code == 200
+    assert isinstance(res.json(), list)
 
 
 def test_can_call_get_institution():
-    institution_name = "ld"
-    res = client.institutions.get_institution(institution_name)
-    status_code = res.get('status_code')
-    institution = res.get('data')
-    assert status_code == 200
+    institution_name = "test-institution"
+    res = client.institutions.get(institution_name)
+    institution = res.json()
+    assert res.status_code == 200
     assert institution["name"] == institution_name

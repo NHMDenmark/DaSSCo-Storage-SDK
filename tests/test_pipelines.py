@@ -2,11 +2,9 @@ from .dassco_test_client import client
 
 
 def test_can_list_pipelines():
-    res = client.pipelines.list_pipelines("ld")
-    status_code = res.get('status_code')
-    pipelines = res.get('data')
-    assert status_code == 200
-    assert isinstance(pipelines, list)
+    res = client.pipelines.list("ld")
+    assert res.status_code == 200
+    assert isinstance(res.json(), list)
 
 
 def test_can_create_pipeline():
