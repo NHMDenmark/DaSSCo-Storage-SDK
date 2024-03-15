@@ -40,7 +40,7 @@ class FileProxy:
 
     def list_file_info(self, asset_guid: str):
         res = send_request_to_file_proxy(
-            RequestMethod.DELETE,
+            RequestMethod.GET,
             self.access_token,
             f"/assets/{asset_guid}/files")
         return res
