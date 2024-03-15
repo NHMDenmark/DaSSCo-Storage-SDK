@@ -38,7 +38,7 @@ def send_request(method: RequestMethod, token: str, path: str, json: dict = None
         raise APIError(res)
 
 
-def send_request_to_file_proxy(method: RequestMethod, token: str, path: str, data=None):
+def send_request_to_file_proxy(method: RequestMethod, token: str, path: str, json: dict = None, data=None):
     headers = {
         'Authorization': f"Bearer {token}",
         'Content-Type': 'application/octet-stream' if method == RequestMethod.PUT else 'application/json',
@@ -46,7 +46,7 @@ def send_request_to_file_proxy(method: RequestMethod, token: str, path: str, dat
 
     api_url = f"https://storage.test.dassco.dk/file_proxy/api{path}"
 
-    res = requests.request(method.name, headers=headers, url=api_url, data=data)
+    res = requests.request(method.name, headers=headers, url=api_url, json=json, data=data)
 
     if 200 <= res.status_code <= 299:
         return res

@@ -1,13 +1,23 @@
 from .dassco_test_client import client
 
-ASSET_GUID = "test_asset10"
+ASSET_GUID = "test_asset12"
 INSTITUTION_NAME = "test-institution"
 COLLECTION_NAME = "test-collection"
 FILE_NAME = "helloworld.txt"
 
 
+def test_delete_share():
+    res = client.file_proxy.delete_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["user1"], 1)
+    assert res.status_code == 200
+
+
+def test_open_share():
+    res = client.file_proxy.open_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["user1"], 1)
+    assert res.status_code == 200
+
+
 def test_upload_file():
-    res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID)
+    res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, 1)
     assert res.status_code == 200
 
 

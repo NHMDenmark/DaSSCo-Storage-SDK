@@ -14,7 +14,7 @@ class FileProxy:
             f"/assetfiles/{institution}/{collection}/{asset_guid}/{file_name}")
         return res
 
-    def upload(self, file_path, institution: str, collection: str, asset_guid: str):
+    def upload(self, file_path, institution: str, collection: str, asset_guid: str, file_size_mb: int):
         file = open(file_path, 'rb')
 
         file_data = file.read()
@@ -27,7 +27,7 @@ class FileProxy:
         res = send_request_to_file_proxy(
             RequestMethod.PUT,
             self.access_token,
-            f"/assetfiles/{institution}/{collection}/{asset_guid}/{file.name}?crc={crc}&file_size_mb=1",
+            f"/assetfiles/{institution}/{collection}/{asset_guid}/{file.name}?crc={crc}&file_size_mb={file_size_mb}",
             data=file_data)
         return res
 
@@ -74,7 +74,7 @@ class FileProxy:
             RequestMethod.POST,
             self.access_token,
             f"/shares/assets/{asset_guid}/createShare",
-            body
+            json=body
         )
         return res
 
@@ -92,7 +92,7 @@ class FileProxy:
             RequestMethod.DELETE,
             self.access_token,
             f"/shares/assets/{asset_guid}/deleteShare",
-            body
+            json=body
         )
         return res
 
@@ -106,6 +106,6 @@ class FileProxy:
             RequestMethod.POST,
             self.access_token,
             f"/shares/assets/{asset_guid}/changeAllocation",
-            data=body
+            json=body
         )
         return res

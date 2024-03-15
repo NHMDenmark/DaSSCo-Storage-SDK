@@ -8,5 +8,5 @@ class HTTPInfoModel(pydantic.BaseModel):
     cache_storage_mb: int
     remaining_storage_mb: int
     allocated_storage_mb: int
-    proxy_allocation_status_text: str | None
+    allocation_status_text: str | None
     http_allocation_status: str
