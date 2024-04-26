@@ -1,3 +1,7 @@
+from typing import List
+
+from ..core.models import Collection
+from ..core.utils import json_to_model
 from ..utils import *
 
 
@@ -14,9 +18,10 @@ class Collections:
             institution_name (str): The name of the given institution
 
         Returns:
-            A dictionary containing the collections
+            A list of collections
         """
-        return send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{institution_name}/collections")
+        res = send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{institution_name}/collections")
+        return json_to_model(List[Collection], res.json())
 
     def create(self, institution_name: str, collection_name: str):
         """
@@ -27,9 +32,10 @@ class Collections:
               collection_name (str): The name of the collection to be created
 
           Returns:
-              A dictionary containing the created collection
+              The created collection
         """
         body = {
             'name': collection_name,
         }
-        return send_request(RequestMethod.POST, self.access_token, f"/v1/institutions/{institution_name}/collections", body)
+        res = send_request(RequestMethod.POST, self.access_token, f"/v1/institutions/{institution_name}/collections", body)
+        return json_to_model(Collection, res.json())

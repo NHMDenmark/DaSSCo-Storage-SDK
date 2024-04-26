@@ -1,18 +1,9 @@
 from typing import List
+
+from ..core.enums import WorkstationStatus
+from ..core.models import Workstation
+from ..core.utils import json_to_model
 from ..utils import *
-from pydantic import BaseModel, TypeAdapter
-from enum import Enum
-
-
-class WorkstationModel(BaseModel):
-    name: str
-    status: str
-    institution_name: str
-
-
-class WorkstationStatus(Enum):
-    IN_SERVICE = 'IN_SERVICE'
-    OUT_OF_SERVICE = 'OUT_OF_SERVICE'
 
 
 class Workstations:
@@ -31,13 +22,7 @@ class Workstations:
             A list of Workstation objects
         """
         res = send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{institution_name}/workstations")
-
-        ta = TypeAdapter(List[WorkstationModel])
-
-        return {
-            'data': ta.validate_python(res.json()),
-            'status_code': res.status_code
-        }
+        return json_to_model(List[Workstation], res.json())
 
     def create(self, institution_name: str, workstation_name: str, status: WorkstationStatus = WorkstationStatus.IN_SERVICE):
         """
@@ -53,10 +38,10 @@ class Workstations:
         """
         body = {
             'name': workstation_name,
-            'status': status
+            'status': status.value
         }
         res = send_request(RequestMethod.POST, self.access_token, f"/v1/institutions/{institution_name}/workstations", body)
-        return WorkstationModel.model_validate(res.get('data'))
+        return json_to_model(Workstation, res.json())
 
     def update(self, institution_name: str, workstation_name: str, body: dict):
         """
@@ -70,4 +55,5 @@ class Workstations:
         Returns:
             Currently returns empty data as a 204 (No Content) status code is returned by the API
         """
-        return send_request(RequestMethod.PUT, self.access_token, f"/v1/institutions/{institution_name}/workstations/{workstation_name}", body)
+        return send_request(RequestMethod.PUT, self.access_token,
+                            f"/v1/institutions/{institution_name}/workstations/{workstation_name}", body)

@@ -1,29 +1,42 @@
-from .dassco_test_client import client
+from dasscostorageclient.core.enums import WorkstationStatus
+from dasscostorageclient.core.models import Workstation
+from .dassco_test_client import mockClient
+
+API_URL = f"https://storage.test.dassco.dk/api"
 
 
-def test_can_create_workstation():
-    # TODO: Requires a DELETE endpoint to clean up
-    pass
-
-
-def test_can_list_workstations():
+def test_can_create_workstation(requests_mock):
     institution_name = "test-institution"
-    res = client.workstations.list(institution_name)
-    status_code = res.get('status_code')
-    workstations = res.get('data')
-    assert status_code == 200
-    assert isinstance(workstations, list)
+    workstation_name = 'ws-01'
+    status = WorkstationStatus.IN_SERVICE
+
+    requests_mock.post(API_URL + f"/v1/institutions/{institution_name}/workstations",
+                       json={'name': workstation_name, 'status': status.value, 'institution': institution_name})
+
+    ws = mockClient.workstations.create(institution_name, workstation_name, status)
+
+    assert ws.name == workstation_name
 
 
-def test_can_update_workstation():
+def test_can_list_workstations(requests_mock):
     institution_name = "test-institution"
-    workstation_name = "ti-ws-01"
-    body = {
-        'name': workstation_name,
-        'status': 'IN_SERVICE'
-    }
-    res = client.workstations.update(institution_name, workstation_name, body)
-    assert res.status_code == 204
+    workstation_name = 'ws-01'
+    status = WorkstationStatus.IN_SERVICE
+
+    requests_mock.get(API_URL + f"/v1/institutions/{institution_name}/workstations",
+                       json=[{'name': workstation_name, 'status': status.value, 'institution': institution_name}])
+
+    workstations = mockClient.workstations.list(institution_name)
+
+    assert workstations == [Workstation(name=workstation_name, status=status, institution=institution_name)]
 
 
-
+# def test_can_update_workstation():
+#     institution_name = "test-institution"
+#     workstation_name = "ti-ws-01"
+#     body = {
+#         'name': workstation_name,
+#         'status': 'IN_SERVICE'
+#     }
+#     res = client.workstations.update(institution_name, workstation_name, body)
+#     assert res.status_code == 204

@@ -1,4 +1,7 @@
+from ..core.models import Institution
+from ..core.utils import json_to_model
 from ..utils import *
+from typing import List
 
 
 class Institutions:
@@ -11,9 +14,10 @@ class Institutions:
         Gets a list of all institutions
 
         Returns:
-            A dictionary containing all the institutions
+            A list of institutions
         """
-        return send_request(RequestMethod.GET, self.access_token, "/v1/institutions")
+        res = send_request(RequestMethod.GET, self.access_token, "/v1/institutions")
+        return json_to_model(List[Institution], res.json())
 
     def get(self, name: str):
         """
@@ -23,9 +27,14 @@ class Institutions:
             name (str): The name of the institution to be retrieved
 
         Returns:
-            A dictionary containing the retrieved institution
+             The retrieved institution
         """
-        return send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{name}")
+        res = send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{name}")
+
+        if res.status_code == 204:
+            raise Exception(f"The institution {name} does not exist")
+
+        return json_to_model(Institution, res.json())
 
     def create(self, name: str):
         """
@@ -35,9 +44,10 @@ class Institutions:
               name (str): The name of the institution to be created
 
           Returns:
-              A dictionary containing the created institution
+              The created institution
         """
         body = {
             'name': name,
         }
-        return send_request(RequestMethod.POST, self.access_token, "/v1/institutions", body)
+        res = send_request(RequestMethod.POST, self.access_token, "/v1/institutions", body)
+        return json_to_model(Institution, res.json())

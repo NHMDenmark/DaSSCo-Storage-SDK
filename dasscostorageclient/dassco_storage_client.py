@@ -14,7 +14,6 @@ class DaSSCoStorageClient:
         self.client_id = client_id
         self.client_secret = client_secret
         self.token_endpoint = "https://idp.test.dassco.dk/realms/dassco/protocol/openid-connect/token"
-        self.api_url = "https://storage.test.dassco.dk/api"
         self.access_token = self.__get_access_token()
         self.institutions = Institutions(self.access_token)
         self.assets = Assets(self.access_token)

@@ -1,20 +1,24 @@
-from .dassco_test_client import client
+from dasscostorageclient.core.models import Institution
+from .dassco_test_client import mockClient
+
+API_URL = f"https://storage.test.dassco.dk/api"
 
 
-def test_can_create_institution():
-    # TODO: Requires a DELETE endpoint to clean up
-    pass
+def test_can_create_institution(requests_mock):
+    institution_name = 'new-institution'
+    requests_mock.post(API_URL + "/v1/institutions", json={'name': institution_name})
+    inst = mockClient.institutions.create(institution_name)
+    assert inst.name == institution_name
 
 
-def test_can_list_institutions():
-    res = client.institutions.list()
-    assert res.status_code == 200
-    assert isinstance(res.json(), list)
+def test_can_list_institutions(requests_mock):
+    requests_mock.get(API_URL + "/v1/institutions", json=[{'name': 'test-institution'}, {'name': 'ld'}])
+    institutions = mockClient.institutions.list()
+    assert institutions == [Institution(name="test-institution"), Institution(name='ld')]
 
 
-def test_can_call_get_institution():
+def test_can_call_get_institution(requests_mock):
     institution_name = "test-institution"
-    res = client.institutions.get(institution_name)
-    institution = res.json()
-    assert res.status_code == 200
-    assert institution["name"] == institution_name
+    requests_mock.get(API_URL + f"/v1/institutions/{institution_name}", json={'name': institution_name})
+    inst = mockClient.institutions.get(institution_name)
+    assert inst.name == institution_name

@@ -1,12 +1,22 @@
-from .dassco_test_client import client
+from dasscostorageclient.core.models import Pipeline
+from .dassco_test_client import mockClient
+
+API_URL = f"https://storage.test.dassco.dk/api"
 
 
-def test_can_list_pipelines():
-    res = client.pipelines.list("ld")
-    assert res.status_code == 200
-    assert isinstance(res.json(), list)
+def test_can_list_pipelines(requests_mock):
+    institution_name = "test-institution"
+    requests_mock.get(API_URL + f"/v1/institutions/{institution_name}/pipelines",
+                      json=[{'name': 'test-pipeline', 'institution': institution_name}])
+    pipelines = mockClient.pipelines.list(institution_name)
+    assert pipelines == [Pipeline(name="test-pipeline", institution=institution_name)]
 
 
-def test_can_create_pipeline():
-    # TODO: Requires a DELETE endpoint to clean up
-    pass
+def test_can_create_pipeline(requests_mock):
+    institution_name = "test-institution"
+    pipeline_name = 'new-pipeline'
+    requests_mock.post(API_URL + f"/v1/institutions/{institution_name}/pipelines",
+                       json={'name': pipeline_name, 'institution': institution_name})
+    pip = mockClient.pipelines.create(institution_name, pipeline_name)
+    assert pip.name == pipeline_name
+    assert pip.institution == institution_name

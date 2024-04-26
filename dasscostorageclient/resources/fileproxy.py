@@ -1,5 +1,6 @@
 from ..utils import *
 import zlib
+import os
 
 
 class FileProxy:
@@ -24,10 +25,12 @@ class FileProxy:
         # Calculate checksum
         crc = zlib.crc32(file_data)
 
+        filename = os.path.basename(file_path)
+
         res = send_request_to_file_proxy(
             RequestMethod.PUT,
             self.access_token,
-            f"/assetfiles/{institution}/{collection}/{asset_guid}/{file.name}?crc={crc}&file_size_mb={file_size_mb}",
+            f"/assetfiles/{institution}/{collection}/{asset_guid}/{filename}?crc={crc}&file_size_mb={file_size_mb}",
             data=file_data)
         return res
 

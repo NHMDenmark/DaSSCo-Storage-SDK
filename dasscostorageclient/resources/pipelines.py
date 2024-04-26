@@ -1,3 +1,7 @@
+from typing import List
+
+from ..core.models import Pipeline
+from ..core.utils import json_to_model
 from ..utils import *
 
 
@@ -14,9 +18,10 @@ class Pipelines:
             institution_name (str): The name of the given institution
 
         Returns:
-            A dictionary containing the pipelines
+            A list pipelines
         """
-        return send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{institution_name}/pipelines")
+        res = send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{institution_name}/pipelines")
+        return json_to_model(List[Pipeline], res.json())
 
     def create(self, institution_name: str, pipeline_name: str):
         """
@@ -27,9 +32,10 @@ class Pipelines:
               pipeline_name (str): The name of the pipeline to be created
 
          Returns:
-            A dictionary containing the created pipeline
+            The created pipeline
         """
         body = {
             'name': pipeline_name,
         }
-        return send_request(RequestMethod.POST, self.access_token, f"/v1/institutions/{institution_name}/pipelines", body)
+        res = send_request(RequestMethod.POST, self.access_token, f"/v1/institutions/{institution_name}/pipelines", body)
+        return json_to_model(Pipeline, res.json())

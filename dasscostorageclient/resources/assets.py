@@ -22,6 +22,10 @@ class AssetModel(BaseModel):
     collection: str
     pipeline: str
     digitiser: str | None
+    parent_guid: str | None
+    audited: bool
+    internal_status: str
+    tags: dict | None
     http_info: HTTPInfoModel | None = Field(alias='httpInfo')
 
 

@@ -1,1 +1,1 @@
-from .dassco_test_client import client
+from .dassco_test_client import client, mockClient
