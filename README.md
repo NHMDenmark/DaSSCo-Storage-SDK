@@ -22,7 +22,6 @@ client_secret = 'CLIENT_SECRET'
 
 client = DaSSCoStorageClient(client_id, client_secret)
 
-res = client.institutions.get_institutions()
+institutions = client.institutions.get()
 
-institutions = res.get('data')
 ```
