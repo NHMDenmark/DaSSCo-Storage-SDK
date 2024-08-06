@@ -1,6 +1,7 @@
 import requests
 from enum import Enum
 from .exceptions.api_error import APIError
+from .constants import DASSCO_BASE_URL
 
 
 class RequestMethod(Enum):
@@ -28,7 +29,7 @@ def send_request(method: RequestMethod, token: str, path: str, json: dict = None
         'Content-Type': 'application/json',
     }
 
-    api_url = f"https://storage.test.dassco.dk/api{path}"
+    api_url = f"{DASSCO_BASE_URL}/ars/api{path}"
 
     res = requests.request(method.name, headers=headers, url=api_url, json=json)
 
@@ -44,7 +45,7 @@ def send_request_to_file_proxy(method: RequestMethod, token: str, path: str, jso
         'Content-Type': 'application/octet-stream' if method == RequestMethod.PUT else 'application/json',
     }
 
-    api_url = f"https://storage.test.dassco.dk/file_proxy/api{path}"
+    api_url = f"{DASSCO_BASE_URL}/file_proxy/api{path}"
 
     res = requests.request(method.name, headers=headers, url=api_url, json=json, data=data)
 

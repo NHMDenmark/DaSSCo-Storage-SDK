@@ -1,8 +1,8 @@
 from dasscostorageclient.core.enums import WorkstationStatus
 from dasscostorageclient.core.models import Workstation
-from .dassco_test_client import mockClient
+from .dassco_test_client import mockClient, base_url
 
-API_URL = f"https://storage.test.dassco.dk/api"
+API_URL = f"{base_url}/ars/api"
 
 
 def test_can_create_workstation(requests_mock):

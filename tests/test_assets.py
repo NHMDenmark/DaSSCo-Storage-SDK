@@ -1,7 +1,7 @@
 import pytest
 from .dassco_test_client import client
 
-ASSET_GUID = "test_asset10"
+ASSET_GUID = "tb-asset-002"
 
 
 @pytest.mark.skip(reason="No endpoint for clean up")

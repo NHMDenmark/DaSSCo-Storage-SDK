@@ -1,10 +1,10 @@
 from .dassco_test_client import client
 import pytest
 
-ASSET_GUID = "test_asset14"
+ASSET_GUID = "example-1"
 INSTITUTION_NAME = "test-institution"
 COLLECTION_NAME = "test-collection"
-FILE_NAME = "helloworld.txt"
+FILE_NAME = "README.md"
 
 
 @pytest.mark.skip(reason="share issue")

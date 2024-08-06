@@ -1,29 +1,14 @@
 from dasscostorageclient import DaSSCoStorageClient
-from dasscostorageclient.core.enums import WorkstationStatus
+from dotenv import load_dotenv
+import os
 
-client_id = "ingestion-server"
-client_secret = "xD5leNJ3HCDS1R1j9gBsN9rLLe9kn2hp"
+load_dotenv()
+
+client_id = os.getenv("CLIENT_ID")
+client_secret = os.getenv("CLIENT_SECRET")
 
 client = DaSSCoStorageClient(client_id, client_secret)
 
-workstation = client.workstations.create("test-institution", "ti-ws-02", WorkstationStatus.IN_SERVICE)
+institutions = client.institutions.list()
 
-print(workstation)
-
-
-
-# from dotenv import load_dotenv
-# from dasscostorageclient import DaSSCoStorageClient
-# import os
-#
-# load_dotenv()
-#
-# file = open("C:/Users/wdm563/PycharmProjects/DaSSCo-Storage-API/helloworld.txt", 'rb')
-#
-# file_data = file.read()
-#
-# file.close()
-#
-# filename = os.path.basename(file.name)
-#
-# print(filename)
+print(institutions)

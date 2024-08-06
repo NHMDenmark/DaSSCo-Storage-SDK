@@ -1,7 +1,7 @@
 from dasscostorageclient.core.models import Pipeline
-from .dassco_test_client import mockClient
+from .dassco_test_client import mockClient, base_url
 
-API_URL = f"https://storage.test.dassco.dk/api"
+API_URL = f"{base_url}/ars/api"
 
 
 def test_can_list_pipelines(requests_mock):
