@@ -1,23 +1,52 @@
 from .dassco_test_client import client
 import pytest
 
-ASSET_GUID = "example-1"
+ASSET_GUID = "dassco_storageclient_test_fileproxy"
 INSTITUTION_NAME = "test-institution"
 COLLECTION_NAME = "test-collection"
 FILE_NAME = "README.md"
 
+@pytest.fixture(scope="module", autouse=True)
+def setup_and_teardown():
+    # before
+    body = {
+        "asset_guid": ASSET_GUID,
+        "institution": INSTITUTION_NAME,
+        "pipeline": "test-pipeline",
+        "collection": COLLECTION_NAME,
+        "workstation": "test-workstation",
+        "status": "WORKING_COPY",
+    }
+    res = client.assets.create(body, 1)
 
-@pytest.mark.skip(reason="share issue")
+    if res.status_code == 200:
+        yield # run tests
+
+    else:
+        print("Failed to run tests for fileproxy since test asset was not create")
+
+        try:
+            client.file_proxy.delete_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["Test user"], 1)
+            client.assets.delete_metadata(ASSET_GUID)
+        except Exception as e:
+            print(f"Failed to remove asset: {e}")
+
+    # after
+    try:
+        client.file_proxy.delete_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["Test user"], 1)
+        client.assets.delete_metadata(ASSET_GUID)
+    except Exception as e:
+        print(f"Failed to clean up: {e}")
+
 @pytest.mark.order(1)
 def test_delete_share():
-    res = client.file_proxy.delete_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["user1"], 1)
+    res = client.file_proxy.delete_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["Test user"], 1)
     assert res.status_code == 200
 
 
-@pytest.mark.skip(reason="share issue")
 @pytest.mark.order(2)
 def test_open_share():
-    res = client.file_proxy.open_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["user1"], 1)
+    res = client.file_proxy.open_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["Test user"], 1)
     assert res.status_code == 200
 
 

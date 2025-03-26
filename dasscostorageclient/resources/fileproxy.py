@@ -112,3 +112,14 @@ class FileProxy:
             json=body
         )
         return res
+
+    def list_shares(self):
+        """
+        List open shares and their information
+        """
+        res = send_request_to_file_proxy(
+            RequestMethod.POST,
+            self.access_token,
+            f"/shares"
+        )
+        return res

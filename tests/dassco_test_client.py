@@ -16,5 +16,3 @@ TOKEN_URL = base_url + "/keycloak/realms/dassco/protocol/openid-connect/token"
 with requests_mock.Mocker() as m:
     m.post(TOKEN_URL, json={'access_token': '123'})
     mockClient = DaSSCoStorageClient('client_id', 'client_secret')
-
-

@@ -4,29 +4,41 @@ from ..utils import *
 from pydantic import TypeAdapter, Field, BaseModel
 from datetime import datetime
 from .models.httpinfo import HTTPInfoModel
+from .models.issues import IssueModel
+from .models.legality import LegalityModel
 
 
 class AssetModel(BaseModel):
-    pid: str | None = Field(alias='asset_pid')
-    guid: str = Field(alias='asset_guid')
-    status: str
-    multi_specimen: bool
-    specimens: list[SpecimenModel]
-    funding: str | None
-    subject: str | None
-    payload_type: str | None
-    file_formats: list[str]
     asset_locked: bool
-    restricted_access: list[str]
-    institution: str
-    collection: str
-    pipeline: str
-    digitiser: str | None
-    parent_guid: str | None
     audited: bool
-    internal_status: str
-    tags: dict | None
+    camera_setting_control: str | None
+    collection: str
+    complete_digitiser_list: list[str]
+    digitiser: str | None
+    external_publisher: list[str]
+    file_formats: list[str]
+    funding: list[str]
+    guid: str = Field(alias='asset_guid')
     http_info: HTTPInfoModel | None = Field(alias='httpInfo')
+    institution: str
+    internal_status: str
+    issues: list[IssueModel]
+    legality: LegalityModel | None
+    make_public: bool
+    metadata_source: str | None
+    metadata_version: str | None
+    mos_id: str | None
+    multi_specimen: bool
+    parent_guid: list[str]
+    payload_type: str | None
+    pid: str | None = Field(alias='asset_pid')
+    pipeline: str
+    push_to_specify: bool
+    restricted_access: list[str]
+    specimens: list[SpecimenModel]
+    status: str
+    subject: str | None
+    tags: dict | None
 
 
 class EventModel(BaseModel):
@@ -114,6 +126,26 @@ class Assets:
             'data': AssetModel.model_validate(res.json()),
             'status_code': res.status_code
         }
+    
+    def unlock(self, guid: str):
+        """
+        Changes the asset locked to false for the given guid
+
+        Args:
+            guid (str): The guid of the asset to be unlocked
+
+        Returns:
+            The status code of the call along with an empty data field for conistency
+        """
+        res = send_request(
+            RequestMethod.PUT,
+            self.access_token,
+            f"/v1/assetmetadata/{guid}/unlock"            
+        )
+        return{
+            "data": None,
+            "status_code": res.status_code
+        }
 
     def list_events(self, guid: str):
         """
@@ -161,4 +193,23 @@ class Assets:
             'status_code': res.status_code
         }
 
+    def delete_metadata(self, guid: str):
+        """
+        Deletes the metadata from ars of an asset
+
+        Args:
+            guid (str): The guid of the asset
+
+        Returns:
+            Status code of the call        
+        """
+        res = send_request(
+            RequestMethod.DELETE,
+            self.access_token,
+            f"/v1/assetmetadata/{guid}/deleteMetadata"
+        )
+        return{
+            "data": None,
+            "status_code": res.status_code
+        }
 
