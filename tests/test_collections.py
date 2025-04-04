@@ -20,6 +20,3 @@ def test_can_create_collection(requests_mock):
     collection = mockClient.collections.create(institution_name, collection_name)
     assert collection.name == collection_name
     assert collection.institution == institution_name
-
-
-
