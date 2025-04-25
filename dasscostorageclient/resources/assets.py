@@ -10,6 +10,7 @@ from .models.legality import LegalityModel
 
 class AssetModel(BaseModel):
     asset_locked: bool
+    asset_subject: str | None
     audited: bool
     camera_setting_control: str | None
     collection: str
@@ -29,7 +30,7 @@ class AssetModel(BaseModel):
     metadata_version: str | None
     mos_id: str | None
     multi_specimen: bool
-    parent_guid: list[str]
+    parent_guids: list[str]
     payload_type: str | None
     pid: str | None = Field(alias='asset_pid')
     pipeline: str
@@ -37,7 +38,6 @@ class AssetModel(BaseModel):
     restricted_access: list[str]
     specimens: list[SpecimenModel]
     status: str
-    subject: str | None
     tags: dict | None
 
 
@@ -51,7 +51,7 @@ class EventModel(BaseModel):
 
 class AssetStatus(BaseModel):
     guid: str = Field(alias='asset_guid')
-    parent_guid: str | None
+    parent_guid: list[str]
     error_timestamp: datetime | None
     status: str
     error_message: str | None
