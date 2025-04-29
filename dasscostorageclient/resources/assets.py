@@ -36,6 +36,8 @@ class AssetModel(BaseModel):
     pipeline: str
     push_to_specify: bool
     restricted_access: list[str]
+    specify_attachment_remarks: str | None
+    specify_attachemnt_title: str | None
     specimens: list[SpecimenModel]
     status: str
     tags: dict | None
