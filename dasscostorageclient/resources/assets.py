@@ -6,6 +6,7 @@ from datetime import datetime
 from .models.httpinfo import HTTPInfoModel
 from .models.issues import IssueModel
 from .models.legality import LegalityModel
+from .models.external_publisher import ExternalPublisherModel
 
 
 class AssetModel(BaseModel):
@@ -16,7 +17,7 @@ class AssetModel(BaseModel):
     collection: str
     complete_digitiser_list: list[str]
     digitiser: str | None
-    external_publisher: list[str]
+    external_publishers: list[ExternalPublisherModel]
     file_formats: list[str]
     funding: list[str]
     guid: str = Field(alias='asset_guid')

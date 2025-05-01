@@ -18,7 +18,7 @@ def test_can_create_asset():
         "asset_pid": ASSET_GUID,
         "asset_guid": "test_asset",
         "funding": ["some funding"],
-        "subject": "folder",
+        "asset_subject": "folder",
         "institution": "test-institution",
         "pipeline": "test-pipeline",
         "collection": "test-collection",
@@ -45,7 +45,7 @@ def test_can_update_asset():
     
     body = {
         'funding': ['test funding'],
-        'subject': 'test subject',
+        'asset_subject': 'test subject',
         'updateUser': 'Test user',  # Required
         'institution': 'test-institution',  # Required
         'pipeline': 'test-pipeline',  # Required
