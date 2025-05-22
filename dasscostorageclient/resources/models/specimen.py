@@ -6,4 +6,5 @@ class SpecimenModel(BaseModel):
     collection: str | None
     barcode: str
     pid: str = Field(alias='specimen_pid')
-    preparation_type: list[str]
+    preparation_types: list[str]
+    asset_preparation_type: str
