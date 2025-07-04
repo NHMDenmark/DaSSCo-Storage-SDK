@@ -29,6 +29,7 @@ class AssetModel(BaseModel):
     make_public: bool
     metadata_source: str | None
     metadata_version: str | None
+    mime_type: str | None
     mos_id: str | None
     multi_specimen: bool
     parent_guids: list[str]
