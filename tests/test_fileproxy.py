@@ -6,6 +6,7 @@ sys.path.append(project_root)
 
 from .dassco_test_client import client
 import pytest
+import time
 
 
 ASSET_GUID = "dassco_storageclient_test_fileproxy"
@@ -59,8 +60,11 @@ def test_open_share():
 
 @pytest.mark.order(3)
 def test_upload_file():
+
+    print("File exists:", os.path.exists(FILE_NAME))
     res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, 1)
     assert res.status_code == 200
+    time.sleep(3)  # Wait for the file to be processed by the server
 
 
 @pytest.mark.order(4)
