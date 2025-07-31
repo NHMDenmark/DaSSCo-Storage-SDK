@@ -60,8 +60,6 @@ def test_open_share():
 
 @pytest.mark.order(3)
 def test_upload_file():
-
-    print("File exists:", os.path.exists(FILE_NAME))
     res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, 1)
     assert res.status_code == 200
     time.sleep(3)  # Wait for the file to be processed by the server
@@ -69,7 +67,6 @@ def test_upload_file():
 
 @pytest.mark.order(4)
 def test_get_file():
-    print(f"File exists: {os.path.exists(FILE_NAME)} - project root: {project_root}")
     res = client.file_proxy.get_file(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, FILE_NAME)
     file = open(FILE_NAME, 'rb')
     file_data = file.read()

@@ -9,6 +9,8 @@ class FileProxy:
         self.access_token = access_token
 
     def get_file(self, institution: str, collection: str, asset_guid: str, file_name: str):
+        url = f"/assetfiles/{institution}/{collection}/{asset_guid}/{file_name}"
+        print(f"Fetching file from: {url}")
         res = send_request_to_file_proxy(
             RequestMethod.GET,
             self.access_token,
