@@ -8,6 +8,11 @@ from .resources.fileproxy import FileProxy
 from .exceptions.api_error import APIError
 from .constants import DASSCO_BASE_URL, DASSCO_TOKEN_PATH
 
+import os
+import sys
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(project_root)
 
 class DaSSCoStorageClient:
 

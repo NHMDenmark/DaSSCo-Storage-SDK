@@ -17,29 +17,29 @@ class AssetModel(BaseModel):
     collection: str
     complete_digitiser_list: list[str]
     digitiser: str | None
-    external_publishers: list[ExternalPublisherModel]
+    external_publishers: list[ExternalPublisherModel] | None
     file_formats: list[str]
     funding: list[str]
     guid: str = Field(alias='asset_guid')
     http_info: HTTPInfoModel | None = Field(alias='httpInfo')
     institution: str
     internal_status: str
-    issues: list[IssueModel]
+    issues: list[IssueModel] | None
     legality: LegalityModel | None
     make_public: bool
     metadata_source: str | None
     metadata_version: str | None
-    mime_type: str | None
+    # mime_type: str | None
     mos_id: str | None
     multi_specimen: bool
     parent_guids: list[str]
     payload_type: str | None
-    pid: str | None = Field(alias='asset_pid')
+    asset_pid: str 
     pipeline: str
     push_to_specify: bool
     restricted_access: list[str]
     specify_attachment_remarks: str | None
-    specify_attachemnt_title: str | None
+    specify_attachment_title: str | None
     specimens: list[SpecimenModel]
     status: str
     tags: dict | None
@@ -47,10 +47,9 @@ class AssetModel(BaseModel):
 
 class EventModel(BaseModel):
     user: str | None
-    timestamp: datetime = Field(alias="timeStamp")
+    timestamp: str | None
     event: str
-    workstation: str
-    pipeline: str
+    pipeline: str | None
 
 
 class AssetStatus(BaseModel):

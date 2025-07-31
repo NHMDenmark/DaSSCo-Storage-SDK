@@ -1,5 +1,11 @@
+import os
+import sys
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(project_root)
+
 import pytest
-from .dassco_test_client import client
+from tests.dassco_test_client import client
 
 ASSET_GUID = "dassco_storageclient_test_asset"
 
@@ -9,14 +15,13 @@ def setup_and_teardown():
 
     yield # run tests
 
-    # after
- 
+    # after 
 
 @pytest.mark.order(1)
 def test_can_create_asset():
     body = {
         "asset_pid": ASSET_GUID,
-        "asset_guid": "test_asset",
+        "asset_guid": ASSET_GUID,
         "funding": ["some funding"],
         "asset_subject": "folder",
         "institution": "test-institution",
@@ -24,12 +29,14 @@ def test_can_create_asset():
         "collection": "test-collection",
         "workstation": "test-workstation",
         "status": "WORKING_COPY",
+        "digitiser": "Anders And",
+        "issues": []
     }
     res = client.assets.create(body, 1)
     status_code = res.get('status_code')
     asset = res.get('data')
     assert status_code == 200
-    assert asset.guid == 'test_asset'
+    assert asset.guid == ASSET_GUID
     assert asset.http_info.allocated_storage_mb == 1
 
 @pytest.mark.order(2)
@@ -43,7 +50,8 @@ def test_can_get_asset():
 @pytest.mark.order(3)
 def test_can_update_asset():
     
-    body = {
+    body = {        
+        'asset_guid': ASSET_GUID,  # Required
         'funding': ['test funding'],
         'asset_subject': 'test subject',
         'updateUser': 'Test user',  # Required
@@ -51,14 +59,15 @@ def test_can_update_asset():
         'pipeline': 'test-pipeline',  # Required
         'collection': 'test-collection',  # Required
         'workstation': 'test-workstation',  # Required
-        'status': 'WORKING_COPY'  # Required
+        'status': 'WORKING_COPY',  # Required
+        "issues": []
     }
     res = client.assets.update(ASSET_GUID, body)
     status_code = res.get('status_code')
     asset = res.get('data')
     assert status_code == 200
     assert asset.funding == ['test funding']
-    assert asset.subject == 'test subject'
+    assert asset.asset_subject == 'test subject'
 
 @pytest.mark.order(4)
 def test_can_list_events():

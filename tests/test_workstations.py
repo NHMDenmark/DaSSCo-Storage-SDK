@@ -1,6 +1,12 @@
+import os
+import sys
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(project_root)
+
 from dasscostorageclient.core.enums import WorkstationStatus
 from dasscostorageclient.core.models import Workstation
-from .dassco_test_client import mockClient, base_url
+from tests.dassco_test_client import mockClient, base_url
 
 API_URL = f"{base_url}/ars/api"
 
