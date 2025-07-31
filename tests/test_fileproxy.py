@@ -17,15 +17,18 @@ def setup_and_teardown():
     # before
     body = {
         "asset_guid": ASSET_GUID,
+        "asset_pid": ASSET_GUID,
         "institution": INSTITUTION_NAME,
         "pipeline": "test-pipeline",
         "collection": COLLECTION_NAME,
         "workstation": "test-workstation",
         "status": "WORKING_COPY",
+        "digitiser": "Anders And",
+        "issues": []
     }
     res = client.assets.create(body, 1)
 
-    if res.status_code == 200:
+    if res.get('status_code') == 200:
         yield # run tests
 
     else:
