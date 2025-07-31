@@ -6,6 +6,7 @@ sys.path.append(project_root)
 
 from .dassco_test_client import client
 import pytest
+import time
 
 
 ASSET_GUID = "dassco_storageclient_test_fileproxy"
@@ -65,6 +66,7 @@ def test_upload_file():
 
 @pytest.mark.order(4)
 def test_get_file():
+    time.sleep(1)  # Ensure the file is uploaded before trying to get it
     res = client.file_proxy.get_file(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, FILE_NAME)
     file = open(FILE_NAME, 'rb')
     file_data = file.read()
@@ -87,5 +89,6 @@ def test_list_file_info():
 
 @pytest.mark.order(7)
 def test_delete_file():
+    time.sleep(1)  # Ensure the file is uploaded before trying to get it
     res = client.file_proxy.delete_file(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, FILE_NAME)
     assert res.status_code == 204
