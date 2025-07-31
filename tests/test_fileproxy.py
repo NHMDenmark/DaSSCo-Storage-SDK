@@ -7,6 +7,7 @@ sys.path.append(project_root)
 from .dassco_test_client import client
 import pytest
 
+
 ASSET_GUID = "dassco_storageclient_test_fileproxy"
 INSTITUTION_NAME = "test-institution"
 COLLECTION_NAME = "test-collection"
@@ -26,19 +27,16 @@ def setup_and_teardown():
         "digitiser": "Anders And",
         "issues": []
     }
-    res = client.assets.create(body, 1)
-
-    if res.get('status_code') == 200:
-        yield # run tests
-
-    else:
-        print("Failed to run tests for fileproxy since test asset was not create")
-
-        try:
-            client.file_proxy.delete_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["Test user"], 1)
-            client.assets.delete_metadata(ASSET_GUID)
-        except Exception as e:
-            print(f"Failed to remove asset: {e}")
+    
+    try:
+        res = client.assets.create(body, 1)
+        if res.get("status_code") != 200:
+            print("Asset may already exist. Continuing with tests.")
+    except Exception as e:
+        print(f"Warning: asset creation failed with exception: {e}")
+    
+    # run tests
+    yield
 
     # after
     try:
