@@ -69,6 +69,7 @@ def test_upload_file():
 
 @pytest.mark.order(4)
 def test_get_file():
+    print(f"File exists: {os.path.exists(FILE_NAME)} - project root: {project_root}")
     res = client.file_proxy.get_file(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, FILE_NAME)
     file = open(FILE_NAME, 'rb')
     file_data = file.read()
