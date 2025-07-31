@@ -67,6 +67,8 @@ def test_upload_file():
 
 @pytest.mark.order(4)
 def test_get_file():
+    resp = client.file_proxy.list_available_files(ASSET_GUID)
+    print(resp.content)
     res = client.file_proxy.get_file(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, FILE_NAME)
     file = open(FILE_NAME, 'rb')
     file_data = file.read()
