@@ -7,5 +7,5 @@ class IssueModel(BaseModel):
     timestamp: datetime = None
     status: str | None
     description: str | None
-    note: str | None
+    notes: str | None
     solved: bool
