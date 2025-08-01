@@ -12,7 +12,7 @@ import time
 ASSET_GUID = "dassco_storageclient_test_fileproxy"
 INSTITUTION_NAME = "test-institution"
 COLLECTION_NAME = "test-collection"
-FILE_NAME = "README.md"
+FILE_NAME = "requirements.txt"
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_and_teardown():
