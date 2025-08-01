@@ -60,15 +60,22 @@ def test_open_share():
 
 @pytest.mark.order(3)
 def test_upload_file():
+    """
     res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, 1)
     
     assert res.status_code == 200
     upload_response = res.json()
     print(upload_response)
-
+    """
+    
 
 @pytest.mark.order(4)
 def test_get_file():
+    res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, 1)    
+    assert res.status_code == 200
+    upload_response = res.json()
+    print(upload_response)
+
     resp = client.file_proxy.list_available_files(ASSET_GUID)
     print(resp.content)
     res = client.file_proxy.get_file(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, FILE_NAME)
