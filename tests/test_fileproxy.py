@@ -61,8 +61,10 @@ def test_open_share():
 @pytest.mark.order(3)
 def test_upload_file():
     res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, 1)
+    
     assert res.status_code == 200
-    time.sleep(3)  # Wait for the file to be processed by the server
+    upload_response = res.json()
+    print(upload_response)
 
 
 @pytest.mark.order(4)
