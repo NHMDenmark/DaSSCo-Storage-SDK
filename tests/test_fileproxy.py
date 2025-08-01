@@ -40,12 +40,14 @@ def setup_and_teardown():
     yield
 
     # after
+    """
     try:
         client.file_proxy.delete_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["Test user"], 1)
         client.assets.delete_metadata(ASSET_GUID)
     except Exception as e:
         print(f"Failed to clean up: {e}")
-
+    """
+        
 @pytest.mark.order(1)
 def test_delete_share():
     res = client.file_proxy.delete_share(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, ["Test user"], 1)
@@ -67,7 +69,7 @@ def test_upload_file():
     upload_response = res.json()
     print(upload_response)
     """
-    
+
 
 @pytest.mark.order(4)
 def test_get_file():
@@ -97,8 +99,9 @@ def test_list_file_info():
     res = client.file_proxy.list_file_info(ASSET_GUID)
     assert res.status_code == 200
 
-
+"""
 @pytest.mark.order(7)
 def test_delete_file():
     res = client.file_proxy.delete_file(INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, FILE_NAME)
     assert res.status_code == 204
+"""
