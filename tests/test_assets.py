@@ -8,6 +8,7 @@ import pytest
 from tests.dassco_test_client import client
 
 ASSET_GUID = "dassco_storageclient_test_asset"
+TIMESTAMP = "2023-10-01T12:00:00Z"
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_and_teardown():
@@ -30,13 +31,16 @@ def test_can_create_asset():
         "workstation": "test-workstation",
         "status": "WORKING_COPY",
         "digitiser": "Anders And",
-        "issues": []
+        "issues": [{"category":"test", "name": "dassco storage client test", "timestamp": TIMESTAMP, "status": "WORKING_COPY", "description": "desc", "notes":"noted", "solved": False}]
     }
     res = client.assets.create(body, 1)
     status_code = res.get('status_code')
     asset = res.get('data')
     assert status_code == 200
     assert asset.guid == ASSET_GUID
+    assert asset.issues[0].notes == "noted"
+    # Dont care to check the full timestamp, just the date and time
+    assert asset.issues[0].timestamp.isoformat()[:19] == TIMESTAMP[:19]
     assert asset.http_info.allocated_storage_mb == 1
 
 @pytest.mark.order(2)
