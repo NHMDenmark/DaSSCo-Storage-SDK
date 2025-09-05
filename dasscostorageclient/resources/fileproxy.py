@@ -36,11 +36,11 @@ class FileProxy:
             data=file_data)
         return res
 
-    def list_available_files(self, asset_guid):
+    def list_available_files(self, asset_guid, institution="test-institution", collection="test-collection"):
         res = send_request_to_file_proxy(
             RequestMethod.GET,
             self.access_token,
-            f"/assetfiles/test-institution/test-collection/{asset_guid}")
+            f"/assetfiles/{institution}/{collection}/{asset_guid}")
         return res
 
     def list_file_info(self, asset_guid: str):
