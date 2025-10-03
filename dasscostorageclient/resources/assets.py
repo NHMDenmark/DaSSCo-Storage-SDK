@@ -216,3 +216,22 @@ class Assets:
             "status_code": res.status_code
         }
 
+    def sync_specify(self, guid: str):
+        """
+        Synchronizes the asset with Specify
+
+        Args:
+            guid (str): The guid of the asset
+
+        Returns:
+            Status code of the call 
+        """
+        res = send_request(
+            RequestMethod.POST,
+            self.access_token,
+            f"/v1/amqp/sync/{guid}"
+        )
+        return{
+            "data": None,
+            "status_code": res.status_code
+        }
