@@ -7,14 +7,14 @@ class SpecimenModel(BaseModel):
     specimen_pid: str | None
     preparation_types: list[str]
     specimen_id: int | None
-    role_restriction: list[str]
+    role_restrictions: list[str]
 
 class AssetSpecimenModel(BaseModel):
     specimen_id: int | None
-    specimen_pid: str | None
     asset_guid: str | None
     specimen_pid: str | None
+    asset_specimen_id: int | None
     asset_preparation_type: str | None
-    asset_detached: bool
     specify_collection_object_attachment_id: int | None
+    asset_detached: bool
     specimen: SpecimenModel | None
