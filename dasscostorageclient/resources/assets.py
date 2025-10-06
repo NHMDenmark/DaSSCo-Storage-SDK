@@ -1,5 +1,5 @@
 from typing import List
-from .models.specimen import SpecimenModel
+from .models.specimen import AssetSpecimenModel
 from ..utils import *
 from pydantic import TypeAdapter, Field, BaseModel
 from datetime import datetime
@@ -40,7 +40,7 @@ class AssetModel(BaseModel):
     restricted_access: list[str]
     specify_attachment_remarks: str | None
     specify_attachment_title: str | None
-    specimens: list[SpecimenModel]
+    asset_specimen: list[AssetSpecimenModel]
     status: str
     tags: dict | None
 

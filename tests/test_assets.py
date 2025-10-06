@@ -31,7 +31,8 @@ def test_can_create_asset():
         "workstation": "test-workstation",
         "status": "WORKING_COPY",
         "digitiser": "Anders And",
-        "issues": [{"category":"test", "name": "dassco storage client test", "timestamp": TIMESTAMP, "status": "WORKING_COPY", "description": "desc", "notes":"noted", "solved": False}]
+        "issues": [{"category":"test", "name": "dassco storage client test", "timestamp": TIMESTAMP, "status": "WORKING_COPY", "description": "desc", "notes":"noted", "solved": False}],
+        "asset_specimen": [{"specimen_id": None, "specimen_pid": f"added_{ASSET_GUID}", "asset_guid": ASSET_GUID, "asset_preparation_type": "dorsal", "asset_detached": False, "specify_collection_object_attachment_id": None, "specimen": {"institution": "test-institution", "collection": "test-collection", "barcode": "barcode-123", "specimen_pid": f"added_{ASSET_GUID}", "preparation_types": ["dorsal"], "specimen_id": None, "role_restriction": []}}],
     }
     res = client.assets.create(body, 1)
     status_code = res.get('status_code')
