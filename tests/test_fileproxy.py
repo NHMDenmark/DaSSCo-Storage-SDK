@@ -4,7 +4,7 @@ import sys
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(project_root)
 
-from .dassco_test_client import client
+from tests.dassco_test_client import client
 import pytest
 import time
 

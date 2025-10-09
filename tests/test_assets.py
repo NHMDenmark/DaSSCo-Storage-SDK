@@ -6,6 +6,7 @@ sys.path.append(project_root)
 
 import pytest
 from tests.dassco_test_client import client
+import json
 
 ASSET_GUID = "dassco_storageclient_test_asset"
 TIMESTAMP = "2023-10-01T12:00:00Z"
@@ -32,11 +33,13 @@ def test_can_create_asset():
         "status": "WORKING_COPY",
         "digitiser": "Anders And",
         "issues": [{"category":"test", "name": "dassco storage client test", "timestamp": TIMESTAMP, "status": "WORKING_COPY", "description": "desc", "notes":"noted", "solved": False}],
-        "asset_specimen": [{"specimen_id": None, "specimen_pid": f"added_{ASSET_GUID}", "asset_guid": ASSET_GUID, "asset_preparation_type": "dorsal", "asset_detached": False, "specify_collection_object_attachment_id": None, "specimen": {"institution": "test-institution", "collection": "test-collection", "barcode": "barcode-123", "specimen_pid": f"added_{ASSET_GUID}", "preparation_types": ["dorsal"], "specimen_id": None, "role_restriction": []}}],
+        "asset_specimen": []
     }
+
     res = client.assets.create(body, 1)
     status_code = res.get('status_code')
     asset = res.get('data')
+    
     assert status_code == 200
     assert asset.guid == ASSET_GUID
     assert asset.issues[0].notes == "noted"

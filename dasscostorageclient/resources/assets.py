@@ -102,7 +102,7 @@ class Assets:
             self.access_token,
             f"/v1/assetmetadata?allocation_mb={allocation_mb}",
             body)
-
+        
         return {
             'data': AssetModel.model_validate(res.json()),
             'status_code': res.status_code

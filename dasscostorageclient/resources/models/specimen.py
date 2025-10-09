@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+from typing import Dict, Optional
 
 class SpecimenModel(BaseModel):
     institution: str | None
@@ -7,7 +8,7 @@ class SpecimenModel(BaseModel):
     specimen_pid: str | None
     preparation_types: list[str]
     specimen_id: int | None
-    role_restrictions: list[str]
+    role_restrictions: Optional[list[Dict[str, str]]] = []
 
 class AssetSpecimenModel(BaseModel):
     specimen_id: int | None

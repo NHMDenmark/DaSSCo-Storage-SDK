@@ -5,6 +5,7 @@ from .resources.workstations import Workstations
 from .resources.pipelines import Pipelines
 from .resources.collections import Collections
 from .resources.fileproxy import FileProxy
+from .resources.specimens import Specimens
 from .exceptions.api_error import APIError
 from .constants import DASSCO_BASE_URL, DASSCO_TOKEN_PATH
 
@@ -27,6 +28,7 @@ class DaSSCoStorageClient:
         self.pipelines = Pipelines(self.access_token)
         self.collections = Collections(self.access_token)
         self.file_proxy = FileProxy(self.access_token)
+        self.specimens = Specimens(self.access_token)
 
     def __get_access_token(self):
         """
