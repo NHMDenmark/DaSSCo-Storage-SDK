@@ -23,9 +23,54 @@ class Specimens:
             self.access_token,
             f"/v1/specimens/{specimenPID}",
             body)
-        print(json.dumps(res.json(), indent=2))
+        
         return {
             'data': SpecimenModel.model_validate(res.json()),
+            'status_code': res.status_code
+        }
+    
+    def get_specimen(self, specimenPID):
+
+        """
+        Gets the given specimen in ARS
+
+        Args:
+            specimenPID (str): The specimenPID of the specimen to be found
+
+        Returns:
+            The specimen object that contains the data of the specimen
+        """
+        res = send_request(
+            RequestMethod.GET,
+            self.access_token,
+            f"/v1/specimens/{specimenPID}"
+            )
+        
+        return {
+            'data': SpecimenModel.model_validate(res.json()),
+            'status_code': res.status_code
+        }
+
+    def delete_specimen(self, specimenPID):
+
+        """
+        Deletes the given specimen in ARS
+
+        Args:
+            specimenPID (str): The specimenPID of the specimen to be deleted
+            
+
+        Returns:
+            The response object that contains the status and message of the delete operation
+        """
+        res = send_request(
+            RequestMethod.DELETE,
+            self.access_token,
+            f"/v1/specimens/{specimenPID}"
+            )
+        
+        return {
+            'data': res.text,
             'status_code': res.status_code
         }
     
