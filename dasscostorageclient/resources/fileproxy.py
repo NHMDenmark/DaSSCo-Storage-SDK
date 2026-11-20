@@ -17,7 +17,7 @@ class FileProxy:
             f"/assetfiles/{institution}/{collection}/{asset_guid}/{file_name}")
         return res
 
-    def upload(self, file_path, institution: str, collection: str, asset_guid: str, file_size_mb: int):
+    def upload(self, file_path, institution: str, collection: str, asset_guid: str, file_size_mb: int, content_type: str = None):
         file = open(file_path, 'rb')
 
         file_data = file.read()
@@ -33,7 +33,8 @@ class FileProxy:
             RequestMethod.PUT,
             self.access_token,
             f"/assetfiles/{institution}/{collection}/{asset_guid}/{filename}?crc={crc}&file_size_mb={file_size_mb}",
-            data=file_data)
+            data=file_data,
+            content_type=content_type)
         return res
 
     def list_available_files(self, asset_guid, institution="test-institution", collection="test-collection"):

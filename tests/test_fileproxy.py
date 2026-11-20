@@ -62,7 +62,7 @@ def test_open_share():
 
 @pytest.mark.order(3)
 def test_upload_file():
-    res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, 1)
+    res = client.file_proxy.upload(FILE_NAME, INSTITUTION_NAME, COLLECTION_NAME, ASSET_GUID, 1, "text/plain")
     assert res.status_code == 200
     
 
@@ -85,6 +85,10 @@ def test_list_available_files():
 @pytest.mark.order(6)
 def test_list_file_info():
     res = client.file_proxy.list_file_info(ASSET_GUID)
+    
+    file_info = res.json()
+    mime_type = file_info[0].get("mime_type")
+    assert mime_type == "text/plain"
     assert res.status_code == 200
 
 

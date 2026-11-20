@@ -39,10 +39,14 @@ def send_request(method: RequestMethod, token: str, path: str, json: dict = None
         raise APIError(res)
 
 
-def send_request_to_file_proxy(method: RequestMethod, token: str, path: str, json: dict = None, data=None):
+def send_request_to_file_proxy(method: RequestMethod, token: str, path: str, json: dict = None, data=None, content_type=None):
+    
+    if content_type is None:
+        content_type = "application/octet-stream" if method == RequestMethod.PUT else "application/json"
+
     headers = {
         'Authorization': f"Bearer {token}",
-        'Content-Type': 'application/octet-stream' if method == RequestMethod.PUT else 'application/json',
+        'Content-Type': content_type,
     }
 
     api_url = f"{DASSCO_BASE_URL}/file_proxy/api{path}"
